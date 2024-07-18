@@ -90,9 +90,14 @@ class Solution:
         return False
     
     def one_away(self, s1, s2):
+        #O(n)
         """There are three types of edits that can be performed on strings: insert a character, remove
         a character, or replace a character. Given two strings, write a function to check if they are 
         one edit (or zero edits) away"""
+        
+        if abs(len(s1) - len(s2)) > 1:
+            return False
+        
         if len(s1) == len(s2):
             difference = 0
             for i in range(len(s1)):
@@ -102,21 +107,33 @@ class Solution:
                         return False
             return True
         
-        # need to finish this part :)
-        elif len(s1) - len(s2) == 1:
-            return True
+        if len(s1) > len(s2):
+            s1, s2 = s2, s1
+    
+        i = 0 
+        j = 0  
+        difference = 0
         
-        elif len(s2) - len(s1) == 1:
-            return True
+        while i < len(s1) and j < len(s2):
+            if s1[i] != s2[j]:
+                difference += 1
+                if difference > 1:
+                    return False
+                j += 1
+            else:
+                i += 1
+                j += 1
         
-        return False
+        return True
+    
+    
                     
         
                 
             
 
 solution = Solution()
-s1 = "pale"
-s2 = "pise"
+s1 = "ale"
+s2 = "pale"
 test1 = solution.one_away(s1, s2)
 print(test1)
