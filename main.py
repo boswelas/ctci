@@ -180,10 +180,53 @@ class Solution:
             r -= 1
             l += 1
         return matrix
+    
+    def zero_matrix(self, matrix):
+        #O(M×N)
+        """Write an algorithm such that if an element in an MxN matrix is 0, its entire row
+        and column are set to 0"""
+        m, n = len(matrix), len(matrix[0])
+        row,col = [1]*m, [1]*n
+        
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == 0:
+                    row[i] = 0
+                    col[j] = 0
+        
+        for i in range(m):
+            if row[i] == 0:
+                for j in range(n):
+                    matrix[i][j] = 0
+        
+        for j in range(n):
+            if col[j] == 0:
+                for i in range(m):
+                    matrix[i][j]= 0
+                    
+        return matrix
+    
+    def string_rotation(self, s1, s2):
+        #O(n)
+        """Assume you have a method isSubstring which checks if one word is a substring 
+        of another. Given two strings, s1 and s2, write code to check if s2 is a rotation of
+        s1 using only one call to isSubstring. (eg 'waterbottle' is a rotation of 'erbottlewat')"""
+        
+        if len(s1) != len(s2):
+            return False
+        
+        concatenated = s1 + s1
+        if s2 in concatenated:
+            return True
+        else:
+            return False
+        
+                   
                 
             
 
 solution = Solution()
-s = [[1,2, 3], [4, 5, 6], [7, 8, 9]]
-test1 = solution.rotate_matrix(s)
+s1 = "waterbottle"
+s2 = "erbottlewat"
+test1 = solution.string_rotation(s1, s2)
 print(test1)
