@@ -150,12 +150,40 @@ class Solution:
             
         
         return return_string if len(return_string) < len(s) else s
-        
-        
+    
+    def rotate_matrix(self, matrix):
+        #O(n^2)
+        """Given an image represented by an NxN matrix, where each pixel in the image is
+        represented by an integer, write a method to rotate the image by 90 degrees. Can you
+        do this in place?"""
+        l = 0
+        r = len(matrix) - 1
+        while l < r:
+            for i in range(r - l):
+                t, b = l, r
+                #top left
+                curr = matrix[t][l + i]
+                next = matrix[t + i][r]
+                matrix[t + i][r] = curr
+                curr = next
+                #top right
+                next = matrix[b][r - i]
+                matrix[b][r - i] = curr
+                curr = next
+                #bottom right
+                next = matrix[b - i][l]
+                matrix[b - i][l] = curr
+                curr = next
+                #bottom left
+                matrix[t][l + i] = curr
+                
+            r -= 1
+            l += 1
+        return matrix
                 
             
 
 solution = Solution()
-s = "aabcccccaaa"
-test1 = solution.string_compression(s)
+s = [[1,2, 3], [4, 5, 6], [7, 8, 9]]
+test1 = solution.rotate_matrix(s)
 print(test1)
