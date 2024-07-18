@@ -126,14 +126,36 @@ class Solution:
         
         return True
     
-    
-                    
+    def string_compression(self, s):
+        """Implement a method to perform basic string compression using the counts of repeated 
+        characters. For example, the string 'aabcccccaaa' would become 'a2b1c5a3'. If the 
+        compressed string would not become smaller than the original string, your method should 
+        return the original string. You can assume the string has only upper/lowercase letters."""
+        return_string = ""
+        count = 1
+        i = 0
+        
+        while i < len(s):
+            return_string += s[i]
+            while i < len(s) - 1 and s[i] == s[i + 1]:
+                i += 1
+                count += 1
+                
+            return_string += str(count)
+            count = 1
+            i += 1
+            
+            if len(return_string) > len(s):
+                return s
+            
+        
+        return return_string if len(return_string) < len(s) else s
+        
         
                 
             
 
 solution = Solution()
-s1 = "ale"
-s2 = "pale"
-test1 = solution.one_away(s1, s2)
+s = "aabcccccaaa"
+test1 = solution.string_compression(s)
 print(test1)
