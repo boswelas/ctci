@@ -1,3 +1,23 @@
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+        last = self.head
+        while last.next:
+            last = last.next
+        last.next = new_node
+
+
 class Solution:
     
     def isUnique(self, s):
@@ -221,12 +241,71 @@ class Solution:
         else:
             return False
         
-                   
-                
+    def remove_dups(self, ll):
+        """Write code to remove duplicates from an unsorted linked list. How would you solve this 
+        problem if a temporary buffer is not allowed?"""
+        if not ll.head:
+            return
+
+        visited = set()
+        current = ll.head
+        previous = None
+
+        while current:
+            if current.data in visited:
+                previous.next = current.next
+            else:
+                visited.add(current.data)
+                previous = current
+            current = current.next
+        
+        return ll
+    
+    def remove_dups2(self, ll):
+        """Write code to remove duplicates from an unsorted linked list. How would you solve this 
+        problem if a temporary buffer is not allowed?"""
+        if not ll.head:
+            return ll
+
+        current = ll.head
+
+        while current:
+            runner = current
+            while runner.next:
+                if runner.next.data == current.data:
+                    runner.next = runner.next.next
+                else:
+                    runner = runner.next
+            current = current.next
+
+        return ll
+    
+    def return_kth_to_last(self, ll, k):
+        """Implement an algorithm to find the kth to last element of a singly linked list."""
+        count = 0
+        curr = ll.head
+        
+        while curr:
+            curr = curr.next 
+            count += 1
+        
+        if k >= count or k < 0:
+            return None
+        
+        curr = ll.head
+        diff = count - k - 1
+        while diff > 0:
+            curr = curr.next
+            diff -= 1
+            
+        return curr
             
 
+
+
 solution = Solution()
-s1 = "waterbottle"
-s2 = "erbottlewat"
-test1 = solution.string_rotation(s1, s2)
-print(test1)
+ll = LinkedList()
+for value in [5, 0, 1, 2, 1, 3, 4, 5]:
+    ll.append(value)
+test1 = solution.return_kth_to_last(ll, 5)
+print(test1.data)
