@@ -299,8 +299,23 @@ class Solution:
             diff -= 1
             
         return curr
+    
+    def delete_middle_node(self, n):
+        """Implement an algorithm to delete a node in the middle of it (ie any
+        node but the first and last node, not necessarily the exact middle) of a 
+        singly linked list, given only access to that node."""
+        
+        if n is None or n.next is None:
+            return None
+        
+        next_node = n.next
+        n.data = next_node.data 
+        n.next = next_node.next 
+                
+        return
+        
+        
             
-
 
 
 solution = Solution()
