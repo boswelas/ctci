@@ -481,9 +481,45 @@ class Solution:
                 return intersect
         
         return intersect
+    
+    def loop_detection(self, head):
+        """Given a linked list which might contain a loop, implement an algorithm that
+        returns the node at the beginning of the loop (if one exists)"""
         
+        if not head or not head.next:
+            return
+        visited = set()
+        node = head
+        while node.next:
+            if node not in visited:
+                visited.add(node)
+                node = node.next
+            else:
+                return node
+        return 
+    
+    def loop_detection_optimized(self, head):
+        if not head or not head.next:
+            return None
         
-            
+        slow = fast = head
+        
+        # Phase 1: Detect if a cycle exists
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                break
+        else:
+            return None  # No cycle
+        
+        # Phase 2: Find the start of the cycle
+        slow = head
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
+        
+        return slow
 
 
 solution = Solution()
