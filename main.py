@@ -420,17 +420,41 @@ class Solution:
             result_ll.head = node
 
         return result_ll
+    
+    def palindrome(self, ll):
+        """Implement a function to check if a linked list is a palindrome"""
+        
+        if ll.head is None:
+            return True
+        
+        stack = []
+        
+        for node in ll:
+            stack.append(node.data)
+        
             
+        reversed_ll = LinkedList()
+        while stack:
+            reversed_ll.append(stack.pop())
             
+        node1 = ll.head
+        node2 = reversed_ll.head
+        
+        while node1 and node2:
+            if node1.data != node2.data:
+                return False
+            node1 = node1.next 
+            node2 = node2.next 
+        
+        return True
+        
             
 
 
 solution = Solution()
-ll1 = LinkedList()
-for value in [ 1, 6, 1, 7]:
-    ll1.append(value)
-ll2 = LinkedList()
-for value in [ 2, 9, 5]:
-    ll2.append(value)
-test1 = solution.sum_lists_forward(ll1, ll2)
+ll = LinkedList()
+for value in [ 0, 1, 2, 3, 1, 0]:
+    ll.append(value)
 
+test1 = solution.palindrome(ll)
+print(test1)
