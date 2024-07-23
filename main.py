@@ -6,6 +6,12 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
+        
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current
+            current = current.next
 
     def append(self, data):
         new_node = Node(data)
@@ -313,14 +319,56 @@ class Solution:
         n.next = next_node.next 
                 
         return
+    
+    def partition(self, ll, n):
+        """ Write code to partition a linked list around a value x, such that all
+        nodes less than x come before all nodes greater than or equal to x. 
+        Important: the partition element x can appear anywhere in the 'right 
+        partition'; it does not need to appear between the left and right
+        partitions. The additional spacing the example below indicates the partition"""
+        if not ll.head or ll.head.next is None:
+            return
+        
+        r, l = None, None
+
+        if ll.head.data < n:
+            l = ll.head
+            while l.next and l.next.data < n:
+                l = l.next
+            r = l.next 
+        else:
+            r = ll.head
+            l = ll.head
+            while l.next and l.next.data >= n:
+                l = l.next
+            if l.next is None:
+                return
+            curr = l.next 
+            r.next = curr.next 
+            curr.next = ll.head
+            ll.head = curr 
+            l = curr
         
         
+        while r and r.next:
+            if r.next.data >= n:
+                r = r.next 
+            else:
+                curr = r.next 
+                r.next = curr.next
+                l.next = curr 
+                curr.next = r 
+                l = curr
+
+        return 
+            
+            
             
 
 
 solution = Solution()
 ll = LinkedList()
-for value in [5, 0, 1, 2, 1, 3, 4, 5]:
+for value in [ 3, 0, 1, 2, 1, 3, 4, 5]:
     ll.append(value)
-test1 = solution.return_kth_to_last(ll, 5)
-print(test1.data)
+test1 = solution.partition(ll, 2)
+
