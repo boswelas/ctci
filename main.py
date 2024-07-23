@@ -361,14 +361,76 @@ class Solution:
                 l = curr
 
         return 
+    
+    def sum_lists_backward(self, ll1, ll2):
+        """You have two numbers represented by a linked list, where each node contains a
+        single digit. The digits are stored in reverse order, such that the 1's digit is at
+        the head of the list. Write a function that adds the two numbers and returns the sum 
+        as a linked list. (You are not allowed to 'cheat' and just convert the linked list
+        to an integer)"""
+        p1, p2 = ll1.head, ll2.head
+        carry = 0
+        result_ll = LinkedList()
+
+        while p1 or p2 or carry:
+            val1 = p1.data if p1 else 0
+            val2 = p2.data if p2 else 0
+
+            total = val1 + val2 + carry
+            carry = total // 10
+            result_ll.append(total % 10)
+
+            if p1: p1 = p1.next
+            if p2: p2 = p2.next
+
+        return result_ll
+         
+
+    def sum_lists_forward(self, ll1, ll2):
+        """You have two numbers represented by a linked list, where each node contains a
+        single digit. The digits are stored in reverse order, such that the 1's digit is at
+        the head of the list. Write a function that adds the two numbers and returns the sum 
+        as a linked list. (You are not allowed to 'cheat' and just convert the linked list
+        to an integer)"""
+        stack1, stack2 = [], []
+        
+        val = ll1.head        
+        
+        while val:
+            stack1.append(val.data)
+            val = val.next 
+            
+        val = ll2.head
+        
+        while val:
+            stack2.append(val.data)
+            val = val.next 
+        
+        carry = 0
+        result_ll = LinkedList()
+
+        while stack1 or stack2 or carry:
+            val1 = stack1.pop() if stack1 else 0
+            val2 = stack2.pop() if stack2 else 0
+
+            total = val1 + val2 + carry
+            carry = total // 10
+            node = Node(total % 10)
+            node.next = result_ll.head
+            result_ll.head = node
+
+        return result_ll
             
             
             
 
 
 solution = Solution()
-ll = LinkedList()
-for value in [ 3, 0, 1, 2, 1, 3, 4, 5]:
-    ll.append(value)
-test1 = solution.partition(ll, 2)
+ll1 = LinkedList()
+for value in [ 1, 6, 1, 7]:
+    ll1.append(value)
+ll2 = LinkedList()
+for value in [ 2, 9, 5]:
+    ll2.append(value)
+test1 = solution.sum_lists_forward(ll1, ll2)
 
