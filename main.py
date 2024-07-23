@@ -447,6 +447,41 @@ class Solution:
             node2 = node2.next 
         
         return True
+    
+    def intersection(self, ll1, ll2):
+        """Given two linked lists, determine if the two lists intersect. Return the 
+        intersecting node. Note that the intersection is defined based on reference, 
+        not value. That is, if the kth node of the first linked list is the exact same
+        node (by ref) as the jth node in the second linked list, then they are intersecting."""
+        if not ll1.head or not ll2.head:
+            return None
+
+        stack1 = []
+        stack2 = []
+        
+        curr = ll1.head
+        while curr:
+            stack1.append(curr)
+            curr = curr.next
+
+        curr = ll2.head
+        while curr:
+            stack2.append(curr)
+            curr = curr.next 
+        
+        
+        intersect = None
+        
+        while stack1 and stack2:
+            v1 = stack1.pop()
+            v2 = stack2.pop()
+            if v1 == v2:
+                intersect = v1
+            else:
+                return intersect
+        
+        return intersect
+        
         
             
 
@@ -456,5 +491,5 @@ ll = LinkedList()
 for value in [ 0, 1, 2, 3, 1, 0]:
     ll.append(value)
 
-test1 = solution.palindrome(ll)
+test1 = solution.intersection(ll1, ll2)
 print(test1)
