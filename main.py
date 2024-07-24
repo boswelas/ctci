@@ -65,8 +65,31 @@ class Three_In_One:
         
     def print_stack(self):
         print(self.stack)
-        
 
+class Min_Stack:
+    
+    def __init__(self):
+        self.stack = []
+        self.minVal = []
+        
+    def push(self, val):
+        self.stack.append(val)
+        if len(self.minVal) == 0 or val <= self.minVal[-1]:
+            self.minVal.append(val)
+        return self.stack
+    
+    def pop(self):
+        if not self.stack:
+            return None
+        val = self.stack.pop()
+        if val == self.minVal[-1]:
+            self.minVal.pop()
+        return self.stack
+    
+    def get_min(self):
+        if not self.minVal:
+            return None
+        return self.minVal[-1]
 
 class Solution:
     
@@ -564,6 +587,7 @@ class Solution:
             fast = fast.next
         
         return slow
+    
     
     
 
