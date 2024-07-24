@@ -23,6 +23,50 @@ class LinkedList:
             last = last.next
         last.next = new_node
 
+class Three_In_One:
+    """Describe how you could use a single array to implement three stacks"""
+    
+    def __init__(self, capacity=2, stacks=3):
+        length = capacity * stacks
+        self.stack = [None] * length
+        self.start = [0, length//stacks, (2 * (length//stacks))]
+        self.end = [length//stacks - 1, (2 * (length//stacks)) - 1, length -1]
+        
+    def push(self, stack, value):
+        i = self.start[stack]
+        while i <= self.end[stack]:
+            if self.stack[i]!=None:
+                i += 1
+            else:
+                self.stack[i] = value
+                return stack
+        return 
+        
+    
+    def pop(self, stack):
+        i = self.end[stack]
+        while i >= self.start[stack]:
+            if self.stack[i] == None:
+                i -= 1
+            else:
+                val = self.stack[i]
+                self.stack[i] = None
+                return val
+        return 
+    
+    def peek(self, stack):
+        i = self.end[stack]
+        while i >= self.start[stack]:
+            if self.stack[i] == None:
+                i -= 1
+            else:
+                return self.stack[i]
+        return None        
+        
+    def print_stack(self):
+        print(self.stack)
+        
+
 
 class Solution:
     
@@ -520,12 +564,15 @@ class Solution:
             fast = fast.next
         
         return slow
+    
+    
 
 
-solution = Solution()
-ll = LinkedList()
-for value in [ 0, 1, 2, 3, 1, 0]:
-    ll.append(value)
+# solution = Solution()
+# ll = LinkedList()
+# for value in [ 0, 1, 2, 3, 1, 0]:
+#     ll.append(value)
 
-test1 = solution.intersection(ll1, ll2)
-print(test1)
+# test1 = solution.intersection(ll1, ll2)
+# print(test1)
+
