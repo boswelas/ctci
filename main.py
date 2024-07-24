@@ -91,6 +91,28 @@ class Min_Stack:
             return None
         return self.minVal[-1]
 
+class Stack_of_Plates:
+    
+    def __init__(self, cap=2):
+        self.max_capacity = cap
+        self.stacks = [[]]
+        self.number_of_stacks = len(self.stacks)
+    
+    def push(self, val):
+        if len(self.stacks[-1]) < self.max_capacity:
+            self.stacks[-1].append(val)
+        else:
+            self.stacks.append([])
+            self.stacks[-1].append(val)
+        return self.stacks[-1]
+    
+    def pop(self):
+        if self.stacks[-1]:
+            self.stacks[-1].pop()
+            if len(self.stacks[-1]) == 0 and len(self.stacks) >1:
+                self.stacks.pop()
+        return self.stacks[-1]       
+
 class Solution:
     
     def isUnique(self, s):
