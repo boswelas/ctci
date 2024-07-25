@@ -175,28 +175,43 @@ class Queue_via_Stacks:
     def empty(self):
         return not self.stack and not self.queue
     
-queue = Queue_via_Stacks()
-for i in [1, 2, 3, 4]:
-    queue.push(i)
-queue.return_q_and_s()
-queue.pop()
-queue.return_q_and_s()
-queue.push(5)
-queue.return_q_and_s()
-print(queue.empty())
-queue.pop()
-queue.return_q_and_s()
-queue.pop()
-queue.return_q_and_s()
-queue.pop()
-queue.return_q_and_s()
-queue.pop()
-queue.return_q_and_s()
-print(queue.empty())
-
-
-
+class Sorted_Stack:
+    """Write a program to sort a stack such that the smallest items are on the top. You can
+    use an additional temporary stack, but you may not copy the elements into any other data 
+    structure (such as an array). The stack supports the following operations: push, pop, peek,
+    and isEmpty"""
     
+    def __init__(self):
+        self.stack = []
+        
+    def return_stack(self):
+        return self.stack
+        
+    def pop(self):
+        if self.stack:
+            return self.stack.pop()
+        return None
+    
+    def peek(self):
+        if self.stack:
+            return self.stack[-1]
+        return None
+    
+    def isEmpty(self):
+        return not self.stack
+    
+    def push(self, val):
+        if not self.stack or val <= self.stack[-1]:
+            self.stack.append(val)
+        else:
+            temp = []
+            while self.stack and self.stack[-1] < val:
+                temp.append(self.stack.pop())
+            self.stack.append(val)
+            while temp:
+                self.stack.append(temp.pop())
+        
+        
 class Solution:
     
     def isUnique(self, s):
