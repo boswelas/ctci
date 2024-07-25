@@ -96,13 +96,17 @@ class Stack_of_Plates:
     def __init__(self, cap=2):
         self.max_capacity = cap
         self.stacks = [[]]
-        self.number_of_stacks = len(self.stacks)
+        self.number_of_stacks = 1
+        
+    def return_stacks(self):
+        return self.stacks
     
     def push(self, val):
         if len(self.stacks[-1]) < self.max_capacity:
             self.stacks[-1].append(val)
         else:
             self.stacks.append([])
+            self.number_of_stacks += 1
             self.stacks[-1].append(val)
         return self.stacks[-1]
     
@@ -111,7 +115,32 @@ class Stack_of_Plates:
             self.stacks[-1].pop()
             if len(self.stacks[-1]) == 0 and len(self.stacks) >1:
                 self.stacks.pop()
-        return self.stacks[-1]       
+        return self.stacks[-1] 
+    
+    def pop_at(self, stack, index):
+        
+        if stack >= self.number_of_stacks or index >= self.max_capacity:
+            return None
+        
+        if self.stacks[stack][index]:
+            i = stack
+            j = index
+            while i < self.number_of_stacks:
+                if j+1 < self.max_capacity:
+                    #if next val in same stack
+                    self.stacks[i][j] = self.stacks[i][j+1]
+                    j += 1
+                elif j >= self.max_capacity - 1 and i+1 < self.number_of_stacks:
+                    #if reached end of stack, need to grab first from next stack
+                    self.stacks[i][j] = self.stacks[i+1][0]
+                    i += 1
+                    j = 0
+                elif i == self.number_of_stacks - 1 and self.stacks[i][j] == self.stacks[-1][-1]:
+                    #reached the very end of the stacks
+                    self.stacks[i].pop()
+                    return self.stacks
+        return self.stacks
+    
 
 class Solution:
     
