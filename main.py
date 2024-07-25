@@ -141,7 +141,62 @@ class Stack_of_Plates:
                     return self.stacks
         return self.stacks
     
+class Queue_via_Stacks:
+    """Implement a MyQueue class which implements a queue using two stacks"""
 
+    def __init__(self):
+        self.queue = []
+        self.stack = []
+
+    def return_q_and_s(self):
+        print("Queue: ", self.queue)
+        print("Stack: ", self.stack)
+        return
+
+    def push(self, val):
+        self.queue.append(val)
+        return 
+    
+    def pop(self):
+        if not self.stack and not self.queue:
+            return None
+        if not self.stack:
+            while len(self.queue) > 0:
+                self.stack.append(self.queue.pop())            
+        return self.stack.pop()
+    
+    def peek(self):
+        if not self.stack and not self.queue:
+            return None
+        if not self.stack:
+            return self.queue[0]
+        return self.stack[-1]
+    
+    def empty(self):
+        return not self.stack and not self.queue
+    
+queue = Queue_via_Stacks()
+for i in [1, 2, 3, 4]:
+    queue.push(i)
+queue.return_q_and_s()
+queue.pop()
+queue.return_q_and_s()
+queue.push(5)
+queue.return_q_and_s()
+print(queue.empty())
+queue.pop()
+queue.return_q_and_s()
+queue.pop()
+queue.return_q_and_s()
+queue.pop()
+queue.return_q_and_s()
+queue.pop()
+queue.return_q_and_s()
+print(queue.empty())
+
+
+
+    
 class Solution:
     
     def isUnique(self, s):
