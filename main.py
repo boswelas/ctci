@@ -211,7 +211,55 @@ class Sorted_Stack:
             while temp:
                 self.stack.append(temp.pop())
         
-        
+class Animal_Shelter:
+    """An animal shelter, which holds only dogs and cats, operates on a strictly FIFO basis.
+    People must adopt either the 'oldest' (based on arrival time) of all animals in the shelter,
+    or they can select whether they would prefer a dog or a cat (and will receive the oldest 
+    animal of that type). Create the data structures to maintain that system and implement 
+    operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You may use the built-in
+    LinkedList data structure."""
+    
+    def __init__(self):
+        self.cats = []
+        self.dogs = []
+        self.count = 0       
+    
+    def return_animals(self):
+        print("cat: ", self.cats)
+        print("dog: ", self.dogs)
+    
+    def enqueue(self, type, name):
+        self.count += 1
+        animal = {"name": name, "order": self.count}
+        if type == "cat":
+            self.cats.append(animal)
+        elif type == "dog":
+            self.dogs.append(animal)
+        return None
+    
+    def dequeueDog(self):
+        if not self.dogs:
+            return None          
+        return self.dogs.pop(0)
+    
+    def dequeueCat(self):
+        if not self.cats:
+            return None          
+        return self.cats.pop(0)
+    
+    def dequeueAny(self):
+        if not self.cats and not self.dogs:
+            return None
+        elif not self.cats:
+            return self.dequeueDog()
+        elif not self.dogs:
+            return self.dequeueCat()
+        if self.cats[0]["order"] < self.dogs[0]["order"]:
+            return self.dequeueCat()
+        else:
+            return self.dequeueDog()
+
+
 class Solution:
     
     def isUnique(self, s):
