@@ -784,6 +784,7 @@ class DirectedGraph:
         visited[start] = True
         
         while queue:
+            # Visiting first in queue = checking top nodes first
             current = queue.pop(0)
             if current == end:
                 return True
@@ -804,6 +805,7 @@ class DirectedGraph:
         stack = [start]
         
         while stack:
+            # Visiting last node in stack = continuing down path before checking all top nodes
             current = stack.pop()
             if current == end:
                 return True
@@ -815,16 +817,31 @@ class DirectedGraph:
                         
         return False
 
+class TreeNode:
+    def __init__(self, value=None):
+        self.value = value 
+        self.l = None
+        self.r = None
 
-
-g = DirectedGraph(4)
-g.addEdge(0, 1)
-g.addEdge(0, 2)
-g.addEdge(1, 1)
-g.addEdge(2, 3)
-g.addEdge(3, 3)
-g.printGraph()
-print(g.bfs(0, 3))
+class MinimalTree:
+    """Given a sorted (inc order) array with unique integer elements, write an
+    algorithm to create a binary search tree with minimal height"""
+    
+    def __init__(self, values):
+        self.head = self.make_tree(values)
+    
+        
+    def make_tree(self, values):
+        if not values:
+            return None
+        
+        mid_index = len(values) // 2
+        node = TreeNode(values[mid_index])
+        
+        node.l = self.make_tree(values[:mid_index])
+        node.r = self.make_tree(values[mid_index + 1:])
+        
+        return node
 
 
 
