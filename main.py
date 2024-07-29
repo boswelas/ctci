@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 class Node:
     def __init__(self, data=None):
         self.data = data
@@ -23,243 +26,7 @@ class LinkedList:
             last = last.next
         last.next = new_node
 
-class Three_In_One:
-    """Describe how you could use a single array to implement three stacks"""
-    
-    def __init__(self, capacity=2, stacks=3):
-        length = capacity * stacks
-        self.stack = [None] * length
-        self.start = [0, length//stacks, (2 * (length//stacks))]
-        self.end = [length//stacks - 1, (2 * (length//stacks)) - 1, length -1]
-        
-    def push(self, stack, value):
-        i = self.start[stack]
-        while i <= self.end[stack]:
-            if self.stack[i]!=None:
-                i += 1
-            else:
-                self.stack[i] = value
-                return stack
-        return 
-        
-    
-    def pop(self, stack):
-        i = self.end[stack]
-        while i >= self.start[stack]:
-            if self.stack[i] == None:
-                i -= 1
-            else:
-                val = self.stack[i]
-                self.stack[i] = None
-                return val
-        return 
-    
-    def peek(self, stack):
-        i = self.end[stack]
-        while i >= self.start[stack]:
-            if self.stack[i] == None:
-                i -= 1
-            else:
-                return self.stack[i]
-        return None        
-        
-    def print_stack(self):
-        print(self.stack)
-
-class Min_Stack:
-    
-    def __init__(self):
-        self.stack = []
-        self.minVal = []
-        
-    def push(self, val):
-        self.stack.append(val)
-        if len(self.minVal) == 0 or val <= self.minVal[-1]:
-            self.minVal.append(val)
-        return self.stack
-    
-    def pop(self):
-        if not self.stack:
-            return None
-        val = self.stack.pop()
-        if val == self.minVal[-1]:
-            self.minVal.pop()
-        return self.stack
-    
-    def get_min(self):
-        if not self.minVal:
-            return None
-        return self.minVal[-1]
-
-class Stack_of_Plates:
-    
-    def __init__(self, cap=2):
-        self.max_capacity = cap
-        self.stacks = [[]]
-        self.number_of_stacks = 1
-        
-    def return_stacks(self):
-        return self.stacks
-    
-    def push(self, val):
-        if len(self.stacks[-1]) < self.max_capacity:
-            self.stacks[-1].append(val)
-        else:
-            self.stacks.append([])
-            self.number_of_stacks += 1
-            self.stacks[-1].append(val)
-        return self.stacks[-1]
-    
-    def pop(self):
-        if self.stacks[-1]:
-            self.stacks[-1].pop()
-            if len(self.stacks[-1]) == 0 and len(self.stacks) >1:
-                self.stacks.pop()
-        return self.stacks[-1] 
-    
-    def pop_at(self, stack, index):
-        
-        if stack >= self.number_of_stacks or index >= self.max_capacity:
-            return None
-        
-        if self.stacks[stack][index]:
-            i = stack
-            j = index
-            while i < self.number_of_stacks:
-                if j+1 < self.max_capacity:
-                    #if next val in same stack
-                    self.stacks[i][j] = self.stacks[i][j+1]
-                    j += 1
-                elif j >= self.max_capacity - 1 and i+1 < self.number_of_stacks:
-                    #if reached end of stack, need to grab first from next stack
-                    self.stacks[i][j] = self.stacks[i+1][0]
-                    i += 1
-                    j = 0
-                elif i == self.number_of_stacks - 1 and self.stacks[i][j] == self.stacks[-1][-1]:
-                    #reached the very end of the stacks
-                    self.stacks[i].pop()
-                    return self.stacks
-        return self.stacks
-    
-class Queue_via_Stacks:
-    """Implement a MyQueue class which implements a queue using two stacks"""
-
-    def __init__(self):
-        self.queue = []
-        self.stack = []
-
-    def return_q_and_s(self):
-        print("Queue: ", self.queue)
-        print("Stack: ", self.stack)
-        return
-
-    def push(self, val):
-        self.queue.append(val)
-        return 
-    
-    def pop(self):
-        if not self.stack and not self.queue:
-            return None
-        if not self.stack:
-            while len(self.queue) > 0:
-                self.stack.append(self.queue.pop())            
-        return self.stack.pop()
-    
-    def peek(self):
-        if not self.stack and not self.queue:
-            return None
-        if not self.stack:
-            return self.queue[0]
-        return self.stack[-1]
-    
-    def empty(self):
-        return not self.stack and not self.queue
-    
-class Sorted_Stack:
-    """Write a program to sort a stack such that the smallest items are on the top. You can
-    use an additional temporary stack, but you may not copy the elements into any other data 
-    structure (such as an array). The stack supports the following operations: push, pop, peek,
-    and isEmpty"""
-    
-    def __init__(self):
-        self.stack = []
-        
-    def return_stack(self):
-        return self.stack
-        
-    def pop(self):
-        if self.stack:
-            return self.stack.pop()
-        return None
-    
-    def peek(self):
-        if self.stack:
-            return self.stack[-1]
-        return None
-    
-    def isEmpty(self):
-        return not self.stack
-    
-    def push(self, val):
-        if not self.stack or val <= self.stack[-1]:
-            self.stack.append(val)
-        else:
-            temp = []
-            while self.stack and self.stack[-1] < val:
-                temp.append(self.stack.pop())
-            self.stack.append(val)
-            while temp:
-                self.stack.append(temp.pop())
-        
-class Animal_Shelter:
-    """An animal shelter, which holds only dogs and cats, operates on a strictly FIFO basis.
-    People must adopt either the 'oldest' (based on arrival time) of all animals in the shelter,
-    or they can select whether they would prefer a dog or a cat (and will receive the oldest 
-    animal of that type). Create the data structures to maintain that system and implement 
-    operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You may use the built-in
-    LinkedList data structure."""
-    
-    def __init__(self):
-        self.cats = []
-        self.dogs = []
-        self.count = 0       
-    
-    def return_animals(self):
-        print("cat: ", self.cats)
-        print("dog: ", self.dogs)
-    
-    def enqueue(self, type, name):
-        self.count += 1
-        animal = {"name": name, "order": self.count}
-        if type == "cat":
-            self.cats.append(animal)
-        elif type == "dog":
-            self.dogs.append(animal)
-        return None
-    
-    def dequeueDog(self):
-        if not self.dogs:
-            return None          
-        return self.dogs.pop(0)
-    
-    def dequeueCat(self):
-        if not self.cats:
-            return None          
-        return self.cats.pop(0)
-    
-    def dequeueAny(self):
-        if not self.cats and not self.dogs:
-            return None
-        elif not self.cats:
-            return self.dequeueDog()
-        elif not self.dogs:
-            return self.dequeueCat()
-        if self.cats[0]["order"] < self.dogs[0]["order"]:
-            return self.dequeueCat()
-        else:
-            return self.dequeueDog()
-
-
+# Ch 1-2
 class Solution:
     
     def isUnique(self, s):
@@ -756,16 +523,309 @@ class Solution:
             fast = fast.next
         
         return slow
+
+# Ch 3
+class Three_In_One:
+    """Describe how you could use a single array to implement three stacks"""
     
+    def __init__(self, capacity=2, stacks=3):
+        length = capacity * stacks
+        self.stack = [None] * length
+        self.start = [0, length//stacks, (2 * (length//stacks))]
+        self.end = [length//stacks - 1, (2 * (length//stacks)) - 1, length -1]
+        
+    def push(self, stack, value):
+        i = self.start[stack]
+        while i <= self.end[stack]:
+            if self.stack[i]!=None:
+                i += 1
+            else:
+                self.stack[i] = value
+                return stack
+        return 
+        
     
+    def pop(self, stack):
+        i = self.end[stack]
+        while i >= self.start[stack]:
+            if self.stack[i] == None:
+                i -= 1
+            else:
+                val = self.stack[i]
+                self.stack[i] = None
+                return val
+        return 
     
+    def peek(self, stack):
+        i = self.end[stack]
+        while i >= self.start[stack]:
+            if self.stack[i] == None:
+                i -= 1
+            else:
+                return self.stack[i]
+        return None        
+        
+    def print_stack(self):
+        print(self.stack)
+
+class Min_Stack:
+    
+    def __init__(self):
+        self.stack = []
+        self.minVal = []
+        
+    def push(self, val):
+        self.stack.append(val)
+        if len(self.minVal) == 0 or val <= self.minVal[-1]:
+            self.minVal.append(val)
+        return self.stack
+    
+    def pop(self):
+        if not self.stack:
+            return None
+        val = self.stack.pop()
+        if val == self.minVal[-1]:
+            self.minVal.pop()
+        return self.stack
+    
+    def get_min(self):
+        if not self.minVal:
+            return None
+        return self.minVal[-1]
+
+class Stack_of_Plates:
+    
+    def __init__(self, cap=2):
+        self.max_capacity = cap
+        self.stacks = [[]]
+        self.number_of_stacks = 1
+        
+    def return_stacks(self):
+        return self.stacks
+    
+    def push(self, val):
+        if len(self.stacks[-1]) < self.max_capacity:
+            self.stacks[-1].append(val)
+        else:
+            self.stacks.append([])
+            self.number_of_stacks += 1
+            self.stacks[-1].append(val)
+        return self.stacks[-1]
+    
+    def pop(self):
+        if self.stacks[-1]:
+            self.stacks[-1].pop()
+            if len(self.stacks[-1]) == 0 and len(self.stacks) >1:
+                self.stacks.pop()
+        return self.stacks[-1] 
+    
+    def pop_at(self, stack, index):
+        
+        if stack >= self.number_of_stacks or index >= self.max_capacity:
+            return None
+        
+        if self.stacks[stack][index]:
+            i = stack
+            j = index
+            while i < self.number_of_stacks:
+                if j+1 < self.max_capacity:
+                    #if next val in same stack
+                    self.stacks[i][j] = self.stacks[i][j+1]
+                    j += 1
+                elif j >= self.max_capacity - 1 and i+1 < self.number_of_stacks:
+                    #if reached end of stack, need to grab first from next stack
+                    self.stacks[i][j] = self.stacks[i+1][0]
+                    i += 1
+                    j = 0
+                elif i == self.number_of_stacks - 1 and self.stacks[i][j] == self.stacks[-1][-1]:
+                    #reached the very end of the stacks
+                    self.stacks[i].pop()
+                    return self.stacks
+        return self.stacks
+    
+class Queue_via_Stacks:
+    """Implement a MyQueue class which implements a queue using two stacks"""
+
+    def __init__(self):
+        self.queue = []
+        self.stack = []
+
+    def return_q_and_s(self):
+        print("Queue: ", self.queue)
+        print("Stack: ", self.stack)
+        return
+
+    def push(self, val):
+        self.queue.append(val)
+        return 
+    
+    def pop(self):
+        if not self.stack and not self.queue:
+            return None
+        if not self.stack:
+            while len(self.queue) > 0:
+                self.stack.append(self.queue.pop())            
+        return self.stack.pop()
+    
+    def peek(self):
+        if not self.stack and not self.queue:
+            return None
+        if not self.stack:
+            return self.queue[0]
+        return self.stack[-1]
+    
+    def empty(self):
+        return not self.stack and not self.queue
+    
+class Sorted_Stack:
+    """Write a program to sort a stack such that the smallest items are on the top. You can
+    use an additional temporary stack, but you may not copy the elements into any other data 
+    structure (such as an array). The stack supports the following operations: push, pop, peek,
+    and isEmpty"""
+    
+    def __init__(self):
+        self.stack = []
+        
+    def return_stack(self):
+        return self.stack
+        
+    def pop(self):
+        if self.stack:
+            return self.stack.pop()
+        return None
+    
+    def peek(self):
+        if self.stack:
+            return self.stack[-1]
+        return None
+    
+    def isEmpty(self):
+        return not self.stack
+    
+    def push(self, val):
+        if not self.stack or val <= self.stack[-1]:
+            self.stack.append(val)
+        else:
+            temp = []
+            while self.stack and self.stack[-1] < val:
+                temp.append(self.stack.pop())
+            self.stack.append(val)
+            while temp:
+                self.stack.append(temp.pop())
+        
+class Animal_Shelter:
+    """An animal shelter, which holds only dogs and cats, operates on a strictly FIFO basis.
+    People must adopt either the 'oldest' (based on arrival time) of all animals in the shelter,
+    or they can select whether they would prefer a dog or a cat (and will receive the oldest 
+    animal of that type). Create the data structures to maintain that system and implement 
+    operations such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You may use the built-in
+    LinkedList data structure."""
+    
+    def __init__(self):
+        self.cats = []
+        self.dogs = []
+        self.count = 0       
+    
+    def return_animals(self):
+        print("cat: ", self.cats)
+        print("dog: ", self.dogs)
+    
+    def enqueue(self, type, name):
+        self.count += 1
+        animal = {"name": name, "order": self.count}
+        if type == "cat":
+            self.cats.append(animal)
+        elif type == "dog":
+            self.dogs.append(animal)
+        return None
+    
+    def dequeueDog(self):
+        if not self.dogs:
+            return None          
+        return self.dogs.pop(0)
+    
+    def dequeueCat(self):
+        if not self.cats:
+            return None          
+        return self.cats.pop(0)
+    
+    def dequeueAny(self):
+        if not self.cats and not self.dogs:
+            return None
+        elif not self.cats:
+            return self.dequeueDog()
+        elif not self.dogs:
+            return self.dequeueCat()
+        if self.cats[0]["order"] < self.dogs[0]["order"]:
+            return self.dequeueCat()
+        else:
+            return self.dequeueDog()
+
+# Ch 4
+class DirectedGraph:
+    
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = defaultdict(list)
+        
+    def addEdge(self,u,v):
+        self.graph[u].append(v)
+        
+    def printGraph(self):
+        print(self.graph)
+    
+    def bfs(self, start, end):
+        """Given a directed graph and two nodes (S and E), design an algorithm to
+        find out whether there is a route from S to E"""
+        visited = [False] * self.V
+        queue = []
+        
+        queue.append(start)
+        visited[start] = True
+        
+        while queue:
+            current = queue.pop(0)
+            if current == end:
+                return True
+            
+            for neighbor in self.graph[current]:
+                if visited[neighbor] == False:
+                    queue.append(neighbor)
+                    visited[neighbor] == True
+
+        return False
+    
+   
+    
+    def dfs(self, start, end):
+        """Given a directed graph and two nodes (S and E), design an algorithm to
+        find out whether there is a route from S to E"""
+        visited = [False] * self.V
+        stack = [start]
+        
+        while stack:
+            current = stack.pop()
+            if current == end:
+                return True
+            if not visited[current]:
+                visited[current] = True
+                for neighbor in self.graph[current]:
+                    if not visited[neighbor]:
+                        stack.append(neighbor)
+                        
+        return False
 
 
-# solution = Solution()
-# ll = LinkedList()
-# for value in [ 0, 1, 2, 3, 1, 0]:
-#     ll.append(value)
 
-# test1 = solution.intersection(ll1, ll2)
-# print(test1)
+g = DirectedGraph(4)
+g.addEdge(0, 1)
+g.addEdge(0, 2)
+g.addEdge(1, 1)
+g.addEdge(2, 3)
+g.addEdge(3, 3)
+g.printGraph()
+print(g.bfs(0, 3))
+
+
+
 
