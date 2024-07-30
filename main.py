@@ -878,21 +878,6 @@ class BinaryTree:
             if node.r is not None:
                 queue.append(node.r)
         return array
-                
-    # def print_tree(self):
-    #     levels = []
-    #     self._print_tree(self.root, 0, levels)
-    #     for level in levels:
-    #         print(" ".join(map(str, level)))
-
-    # def _print_tree(self, node, level, levels):
-    #     if node is None:
-    #         return
-    #     if len(levels) == level:
-    #         levels.append([])
-    #     levels[level].append(node.data)
-    #     self._print_tree(node.l, level + 1, levels)
-    #     self._print_tree(node.r, level + 1, levels)
         
     def list_of_depths(self):
         """Given a binary tree, design an algorithm which creates a linked list of all the nodes
@@ -924,15 +909,40 @@ class BinaryTree:
             #     print(current_node.data.data, end=" -> ")
             #     current_node = current_node.next
             
+    def check_balanced(self):
+        """Implement a function to check if a binary tree is balanced. For the purpose of 
+        this question, a balanced tree is defined to be a tree such that the heights of the two 
+        subtrees of any node never differ by more than one."""
         
+        def dfs(root):
+            if not root:
+                return [True, 0]
+            
+            left, right = dfs(root.l), dfs(root.r)
+            balanced = left[0] and right[0] and abs(left[1] - right[1]) <= 1
+            
+            return [balanced, 1 + max(left[1], right[1])]
+        
+        root = self.root
+        return dfs(root)
+            
+            
+        
+         
 tree = BinaryTree()
+# tree.insert(10)
+# tree.insert(5)
+# tree.insert(15)
+# tree.insert(3)
+# tree.insert(7)
+# tree.insert(12)
+# tree.insert(18)
 tree.insert(10)
 tree.insert(5)
 tree.insert(15)
-tree.insert(3)
-tree.insert(7)
-tree.insert(12)
-tree.insert(18)
-print(tree.to_array())
-tree.list_of_depths()
+tree.insert(1)
+tree.insert(8)
+tree.insert(6)
+print(tree.check_balanced())
+
 
