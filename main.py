@@ -818,8 +818,8 @@ class DirectedGraph:
         return False
 
 class TreeNode:
-    def __init__(self, value=None):
-        self.value = value 
+    def __init__(self, data=None):
+        self.data = data 
         self.l = None
         self.r = None
 
@@ -843,6 +843,96 @@ class MinimalTree:
         
         return node
 
+class BinaryTree:
+    def __init__(self):
+        self.root = None
 
+    def insert(self, data):
+        if self.root is None:
+            self.root = TreeNode(data)
+        else:
+            self._insert(data, self.root)
 
+    def _insert(self, data, node):
+        if data < node.data:
+            if node.l is None:
+                node.l = TreeNode(data)
+            else:
+                self._insert(data, node.l)
+        else:
+            if node.r is None:
+                node.r = TreeNode(data)
+            else:
+                self._insert(data, node.r)
+    
+    def to_array(self):
+        if self.root is None:
+            return []
+        queue = [self.root]
+        array = []
+        while queue:
+            node = queue.pop(0)
+            array.append(node.data)
+            if node.l is not None:
+                queue.append(node.l)
+            if node.r is not None:
+                queue.append(node.r)
+        return array
+                
+    # def print_tree(self):
+    #     levels = []
+    #     self._print_tree(self.root, 0, levels)
+    #     for level in levels:
+    #         print(" ".join(map(str, level)))
+
+    # def _print_tree(self, node, level, levels):
+    #     if node is None:
+    #         return
+    #     if len(levels) == level:
+    #         levels.append([])
+    #     levels[level].append(node.data)
+    #     self._print_tree(node.l, level + 1, levels)
+    #     self._print_tree(node.r, level + 1, levels)
+        
+    def list_of_depths(self):
+        """Given a binary tree, design an algorithm which creates a linked list of all the nodes
+        at each depth (e.g. if you have a tree with depth D, you'l have D linked lists)"""
+        # heads = []
+        queue = []
+        count = 1
+        
+        queue.append(self.root)
+        
+        while queue:
+            i = 0
+            ll = LinkedList()
+            while i < count and queue:
+                current = queue.pop(0)
+                if current.l:
+                    queue.append(current.l)
+                if current.r:
+                    queue.append(current.r)
+                ll.append(current)
+                i += 1
+            # heads.append(ll)
+            count = count * 2
+            
+            # for index, linked_list in enumerate(heads):
+            #     print(f"Depth {index}: ", end="")
+            #     current_node = linked_list.head
+            # while current_node:
+            #     print(current_node.data.data, end=" -> ")
+            #     current_node = current_node.next
+            
+        
+tree = BinaryTree()
+tree.insert(10)
+tree.insert(5)
+tree.insert(15)
+tree.insert(3)
+tree.insert(7)
+tree.insert(12)
+tree.insert(18)
+print(tree.to_array())
+tree.list_of_depths()
 
