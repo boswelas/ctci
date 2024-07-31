@@ -926,23 +926,31 @@ class BinaryTree:
         root = self.root
         return dfs(root)
             
+    def validate_bst(self):
+        """Implement a function to check if a binary tree is a binary search tree."""       
+        def valid(node, left, right):
+            if not node:
+                return True
             
-        
+            if not node.data < right and node.data > left:
+                return False
+            
+            return (valid(node.l, left, node.data) and 
+                    valid(node.r, node.data, right))
+            
+        node = self.root
+        return valid(node, float("-inf"), float("inf"))
          
 tree = BinaryTree()
-# tree.insert(10)
-# tree.insert(5)
-# tree.insert(15)
-# tree.insert(3)
-# tree.insert(7)
-# tree.insert(12)
-# tree.insert(18)
 tree.insert(10)
 tree.insert(5)
 tree.insert(15)
-tree.insert(1)
-tree.insert(8)
-tree.insert(6)
-print(tree.check_balanced())
+tree.insert(3)
+tree.insert(7)
+tree.insert(12)
+tree.insert(18)
+print(tree.to_array())
+print(tree.validate_bst())
+
 
 
