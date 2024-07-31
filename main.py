@@ -940,7 +940,26 @@ class BinaryTree:
             
         node = self.root
         return valid(node, float("-inf"), float("inf"))
-         
+    
+    def successor(self, node):
+        """Write an algorithm to find the 'next' node (ie in-order successor) of a given node 
+        in a binary search tree. You may assume that each node has a link to its parent."""
+        successor = None
+        current = self.root
+        
+        while current:
+            if node.data >= current.data:
+                current = current.r
+            else:
+                successor = current
+                current = current.l
+                
+        return successor.data
+            
+                    
+                
+        
+        
 tree = BinaryTree()
 tree.insert(10)
 tree.insert(5)
@@ -950,7 +969,7 @@ tree.insert(7)
 tree.insert(12)
 tree.insert(18)
 print(tree.to_array())
-print(tree.validate_bst())
+# print(tree.successor(3))
 
 
 
